@@ -48,27 +48,48 @@ export default function Home() {
     const interval = setInterval(fetchData, 10000);
 
     // 카카오맵 초기화
-    const script = document.createElement("script");
-    // autoload=false 파라미터가 중요합니다.
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&autoload=false`;
-    script.async = true;
-    document.head.appendChild(script);
+    const initMap = () => {
+      const kakao = (window as any).kakao;
+      if (!kakao?.maps) return;
 
-    script.onload = () => {
-      // 카카오맵 API를 수동으로 로드합니다.
-      window.kakao.maps.load(() => {
-        const container = document.getElementById("map"); // 지도를 담을 영역의 id
-        if (container) {
-          const options = {
-            center: new window.kakao.maps.LatLng(37.5587, 126.8638),
-            level: 7,
-          };
+      // autoload=false 일 때 수동으로 load 호출
+      kakao.maps.load(() => {
+        const container = document.getElementById("kakao-map");
+        if (!container) return;
 
-          const map = new window.kakao.maps.Map(container, options);
-          map.addOverlayMapTypeId(window.kakao.maps.MapTypeId.TRAFFIC);
-        }
+        const map = new kakao.maps.Map(container, {
+          center: new kakao.maps.LatLng(37.5587, 126.8638),
+          level: 7,
+        });
+        map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
+
+        const positions = [
+          { title: "가양9단지", lat: 37.5587, lng: 126.8638 },
+          { title: "성수아이파크", lat: 37.5472, lng: 127.0558 },
+        ];
+
+        positions.forEach((pos) => {
+          const marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(pos.lat, pos.lng),
+          });
+          marker.setMap(map);
+          const infowindow = new kakao.maps.InfoWindow({
+            position: new kakao.maps.LatLng(pos.lat, pos.lng),
+            content: `<div style="padding:5px;font-size:13px;">${pos.title}<br>
+              <a href="https://map.kakao.com/link/to/${pos.title},${pos.lat},${pos.lng}" 
+                style="color:blue" target="_blank">길찾기</a></div>`,
+          });
+          infowindow.open(map, marker);
+        });
       });
     };
+
+    if ((window as any).kakao?.maps) {
+      initMap();
+    } else {
+      const script = document.querySelector('script[src*="dapi.kakao.com"]');
+      script?.addEventListener("load", initMap);
+    }
 
     return () => clearInterval(interval);
   }, []);
