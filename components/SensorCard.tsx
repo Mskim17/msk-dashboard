@@ -20,7 +20,7 @@ export function SensorCard({ temperature, humidity, title }: SensorCardProps) {
             <Thermometer className="h-5 w-5 text-orange-500" />
             <div>
               <p className="text-2xl font-bold">
-                {temperature ? `${temperature}℃` : "--"}
+                {temperature ? `${temperature}` : "--"}
               </p>
               <p className="text-xs text-muted-foreground">온도</p>
             </div>
@@ -29,7 +29,7 @@ export function SensorCard({ temperature, humidity, title }: SensorCardProps) {
             <Droplets className="h-5 w-5 text-blue-500" />
             <div>
               <p className="text-2xl font-bold">
-                {humidity ? `${humidity}%` : "--"}
+                {humidity ? `${humidity}` : "--"}
               </p>
               <p className="text-xs text-muted-foreground">습도</p>
             </div>

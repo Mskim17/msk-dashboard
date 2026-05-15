@@ -37,11 +37,11 @@ export function AirCard({ aqi, pm25, pm10 }: AirCardProps) {
         <div className="grid grid-cols-2 gap-2 text-sm">
           <div className="bg-muted rounded-lg p-2 text-center">
             <p className="text-xs text-muted-foreground mb-1">PM2.5</p>
-            <p className="font-bold">{pm25 ? `${pm25} μg/m³` : "--"}</p>
+            <p className="font-bold">{pm25 ? `${pm25}` : "--"}</p>
           </div>
           <div className="bg-muted rounded-lg p-2 text-center">
             <p className="text-xs text-muted-foreground mb-1">PM10</p>
-            <p className="font-bold">{pm10 ? `${pm10} μg/m³` : "--"}</p>
+            <p className="font-bold">{pm10 ? `${pm10}` : "--"}</p>
           </div>
         </div>
       </CardContent>

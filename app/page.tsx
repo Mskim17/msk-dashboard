@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
 import { SensorCard } from "@/components/SensorCard";
 import { WeatherCard } from "@/components/WeatherCard";
 import { AirCard } from "@/components/AirCard";
@@ -15,11 +14,13 @@ interface SensorData {
     feelTemperature: string | null;
     humidity: string | null;
     windSpeed: string | null;
-    rain: number | null;
+    rain: string | null;
   };
-  air: { aqi: string | null; pm25: number | null; pm10: number | null };
+  air: { aqi: string | null; pm25: string | null; pm10: string | null };
   updatedAt: string | null;
 }
+
+const API_URL = "http://mskhouse.iptime.org:3324/api/dashboard";
 
 export default function Home() {
   const [data, setData] = useState<SensorData>({
@@ -30,67 +31,50 @@ export default function Home() {
   });
   const [connected, setConnected] = useState(false);
 
+  const fetchData = async () => {
+    try {
+      const res = await fetch(API_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("API 오류");
+      const json = await res.json();
+      setData(json);
+      setConnected(true);
+    } catch {
+      setConnected(false);
+    }
+  };
+
   useEffect(() => {
-    const socket = io();
-    socket.on("connect", () => setConnected(true));
-    socket.on("disconnect", () => setConnected(false));
-    socket.on("sensorData", (d: SensorData) => setData(d));
+    fetchData();
+    const interval = setInterval(fetchData, 10000);
 
-    // 카카오맵 초기화 추가
-    const initMap = () => {
-      if (typeof window === "undefined") return;
-      const kakao = (window as any).kakao;
-      if (!kakao || !kakao.maps) return;
+    // 카카오맵 초기화
+    const script = document.createElement("script");
+    // autoload=false 파라미터가 중요합니다.
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY&autoload=false`;
+    script.async = true;
+    document.head.appendChild(script);
 
-      const container = document.getElementById("kakao-map");
-      if (!container) return;
+    script.onload = () => {
+      // 카카오맵 API를 수동으로 로드합니다.
+      window.kakao.maps.load(() => {
+        const container = document.getElementById("map"); // 지도를 담을 영역의 id
+        if (container) {
+          const options = {
+            center: new window.kakao.maps.LatLng(37.5587, 126.8638),
+            level: 7,
+          };
 
-      const options = {
-        center: new kakao.maps.LatLng(37.5587, 126.8638),
-        level: 7,
-      };
-      const map = new kakao.maps.Map(container, options);
-      map.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-
-      const positions = [
-        { title: "가양9단지", lat: 37.5587, lng: 126.8638 },
-        { title: "성수아이파크", lat: 37.5472, lng: 127.0558 },
-      ];
-
-      positions.forEach((pos) => {
-        const marker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(pos.lat, pos.lng),
-        });
-        marker.setMap(map);
-
-        const infowindow = new kakao.maps.InfoWindow({
-          position: new kakao.maps.LatLng(pos.lat, pos.lng),
-          content: `<div style="padding:5px;font-size:13px;">
-            ${pos.title}<br>
-            <a href="https://map.kakao.com/link/to/${pos.title},${pos.lat},${pos.lng}" 
-              style="color:blue" target="_blank">길찾기</a>
-          </div>`,
-        });
-        infowindow.open(map, marker);
+          const map = new window.kakao.maps.Map(container, options);
+          map.addOverlayMapTypeId(window.kakao.maps.MapTypeId.TRAFFIC);
+        }
       });
     };
 
-    // 카카오맵 SDK 로드 후 초기화
-    if ((window as any).kakao?.maps) {
-      initMap();
-    } else {
-      const script = document.querySelector('script[src*="dapi.kakao.com"]');
-      if (script) {
-        script.addEventListener("load", initMap);
-      }
-    }
-
-    return () => { socket.disconnect(); };
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <main className="min-h-screen bg-background p-4 md:p-6">
-      {/* 헤더 */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold">🏠 MSK House</h1>
@@ -105,7 +89,6 @@ export default function Home() {
 
       <Separator className="mb-6" />
 
-      {/* 센서 카드 그리드 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         <SensorCard
           title="실내 온습도"
@@ -127,12 +110,10 @@ export default function Home() {
         />
       </div>
 
-      {/* 카카오 지도 */}
       <div className="rounded-xl overflow-hidden border" style={{ height: 350 }}>
         <div id="kakao-map" style={{ width: "100%", height: "100%" }} />
       </div>
 
-      {/* 푸터 */}
       <div className="mt-6 text-center text-xs text-muted-foreground">
         MSK © 2026
       </div>

@@ -31,18 +31,18 @@ export function WeatherCard({ weather, temperature, feelTemperature, humidity, w
         <div className="flex items-center gap-3 mb-4">
           <span className="text-4xl">{weather ? weatherEmoji[weather] || "🌤️" : "🌤️"}</span>
           <div>
-            <p className="text-3xl font-bold">{temperature ? `${temperature}℃` : "--"}</p>
-            <p className="text-xs text-muted-foreground">체감 {feelTemperature ? `${feelTemperature}℃` : "--"}</p>
+            <p className="text-3xl font-bold">{temperature ? `${temperature}` : "--"}</p>
+            <p className="text-xs text-muted-foreground">체감 {feelTemperature ? `${feelTemperature}` : "--"}</p>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-2 text-sm">
           <div className="flex items-center gap-1">
             <Droplets className="h-4 w-4 text-blue-500" />
-            <span>{humidity ? `${humidity}%` : "--"}</span>
+            <span>{humidity ? `${humidity}` : "--"}</span>
           </div>
           <div className="flex items-center gap-1">
             <Wind className="h-4 w-4 text-gray-500" />
-            <span>{windSpeed ? `${windSpeed}㎧` : "--"}</span>
+            <span>{windSpeed ? `${windSpeed}` : "--"}</span>
           </div>
           <div className="flex items-center gap-1">
             <Umbrella className="h-4 w-4 text-blue-400" />
