@@ -30,7 +30,7 @@ export default function Home() {
     updatedAt: null,
   });
   const [connected, setConnected] = useState(false);
-
+  
   const fetchData = async () => {
     try {
       const res = await fetch(API_URL, { cache: "no-store" });
@@ -130,7 +130,7 @@ export default function Home() {
           pm10={data.air.pm10}
         />
       </div>
-
+      
       <div className="rounded-xl overflow-hidden border" style={{ height: 350 }}>
         <div id="kakao-map" style={{ width: "100%", height: "100%" }} />
       </div>

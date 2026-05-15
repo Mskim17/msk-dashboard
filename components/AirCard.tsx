@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 
 interface AirCardProps {
   aqi: string | null;
-  pm25: number | null;
-  pm10: number | null;
+  pm25: string | null;
+  pm10: string | null;
 }
 
 const aqiColor: Record<string, string> = {

@@ -7,7 +7,7 @@ interface WeatherCardProps {
   feelTemperature: string | null;
   humidity: string | null;
   windSpeed: string | null;
-  rain: number | null;
+  rain: string | null;
 }
 
 const weatherEmoji: Record<string, string> = {
