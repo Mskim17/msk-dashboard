@@ -20,7 +20,7 @@ interface SensorData {
   updatedAt: string | null;
 }
 
-const API_URL = "http://mskhouse.iptime.org:3324/api/dashboard";
+const API_URL = "/api/proxy/dashboard";
 
 export default function Home() {
   const [data, setData] = useState<SensorData>({
