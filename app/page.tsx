@@ -117,11 +117,6 @@ export default function Home() {
           temperature={data.indoor.temperature}
           humidity={data.indoor.humidity}
         />
-        <ApplianceCard
-          indoorTemp={data.indoor.temperature}
-          indoorHum={data.indoor.humidity}
-          outdoorHum={data.outdoor.humidity}
-        />
         <WeatherCard
           weather={data.outdoor.weather}
           temperature={data.outdoor.temperature}
@@ -129,6 +124,11 @@ export default function Home() {
           humidity={data.outdoor.humidity}
           windSpeed={data.outdoor.windSpeed}
           rain={data.outdoor.rain}
+        />
+        <ApplianceCard
+          indoorTemp={data.indoor.temperature}
+          indoorHum={data.indoor.humidity}
+          outdoorHum={data.outdoor.humidity}
         />
         <AirCard
           aqi={data.air.aqi}
