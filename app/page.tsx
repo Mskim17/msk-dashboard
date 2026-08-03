@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { SensorCard } from "@/components/SensorCard";
 import { WeatherCard } from "@/components/WeatherCard";
 import { AirCard } from "@/components/AirCard";
+import { ApplianceCard } from "@/components/ApplianceCard"; // 추가 import
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
@@ -115,6 +116,11 @@ export default function Home() {
           title="실내 온습도"
           temperature={data.indoor.temperature}
           humidity={data.indoor.humidity}
+        />
+        <ApplianceCard
+          indoorTemp={data.indoor.temperature}
+          indoorHum={data.indoor.humidity}
+          outdoorHum={data.outdoor.humidity}
         />
         <WeatherCard
           weather={data.outdoor.weather}
