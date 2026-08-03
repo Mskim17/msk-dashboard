@@ -32,8 +32,8 @@ export function getApplianceRecommendation(
     (0.81 * inTemp + 0.01 * inHum * (0.99 * inTemp - 14.3) + 46.3).toFixed(1)
   );
 
-  // 1. 에어컨 가동 조건 (온도 30°C 이상 또는 불쾌지수 75 이상)
-  if (inTemp >= 30 || di >= 75) {
+  // 1. 에어컨 가동 조건 (온도 30°C 이상 또는 불쾌지수 80 이상)
+  if (inTemp >= 30 || di >= 80) {
     return {
       action: "AIR_CONDITIONER",
       title: "에어컨 가동 추천",
