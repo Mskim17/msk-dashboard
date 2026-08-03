@@ -134,6 +134,10 @@ export default function Home() {
           aqi={data.air.aqi}
           pm25={data.air.pm25}
           pm10={data.air.pm10}
+          indoorTemp={data.indoor.temperature}
+          indoorHum={data.indoor.humidity}
+          outdoorTemp={data.outdoor.temperature}
+          outdoorHum={data.outdoor.humidity}
         />
       </div>
       

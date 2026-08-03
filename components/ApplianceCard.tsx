@@ -24,7 +24,7 @@ export function ApplianceCard({
         <Badge variant={rec.badgeVariant}>{rec.action}</Badge>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground mt-1">{rec.reason}</p>
+        <p className="text-sm text-muted-foreground">{rec.reason}</p>
         {rec.discomfortIndex !== undefined && (
           <div className="mt-3 text-xs text-muted-foreground border-t pt-2">
             현재 불쾌지수: <span className="font-semibold text-foreground">{rec.discomfortIndex}</span>
