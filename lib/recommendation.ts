@@ -46,8 +46,8 @@ export function getApplianceRecommendation(
     };
   }
 
-  // 3. 제습기 조건 (30°C 미만 AND 실내 습도 70% 이상)
-  if (temp < 30 && hum >= 70) {
+  // 3. 제습기 조건 (31°C 미만 AND 실내 습도 70% 이상)
+  if (temp < 31 && hum >= 70) {
     return {
       action: "💧 제습기 추천",
       reason: `기온은 ${temp}°C로 에어컨 틀 수준은 아니지만, 습도(${hum}%)가 높아 제습기를 권장합니다.`,
